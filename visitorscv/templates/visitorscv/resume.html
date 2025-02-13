@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jorge's Resume</title>
+    <style>
+        /* Base styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+        }
+        /* Navigation Panel */
+        .nav {
+            width: 20%;
+            background-color: #f2f2f2;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+        .nav a {
+            display: block;
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .nav a:hover,
+        .nav a.active {
+            background-color: #ccc;
+            font-weight: bold;
+        }
+        /* Content Display */
+        .content {
+            margin-left: 30%;
+            padding: 20px;
+            width: 80%;
+        }
+        .section {
+            padding: 20px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body >
+    <div class="container" style="display:flex;width:100%">
+        <!-- Navigation Panel -->
+        <div class="nav" style="width:20%">
+            <a href="#personal_data">Personal Data</a>
+            <a href="#professional_experience">Professional Experience</a>
+            <a href="#education">Education</a>
+            <a href="#skills">Skills</a>
+            <br>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+            <button type="submit">Logout</button>
+            </form>
+        </div>
+
+        <!-- Content Display -->
+        <div class="content" style="width:80%">
+            <!-- Personal Data Section -->
+            <div id="personal_data" class="section">
+                <h2>Personal Data</h2>
+                {% if personal_data %}
+                    <img src="{{ personal_data.profile_photo.url }}" alt="Profile Photo" width="150"><br><br>
+                    <p><strong>Name:</strong> {{ personal_data.first_name }} {{ personal_data.last_name }}</p>
+                    <p><strong>Address:</strong> {{ personal_data.address }}</p>
+                    <p><strong>Telephone:</strong> {{ personal_data.telephone }}</p>
+                    <p><strong>Email:</strong> {{ personal_data.email }}</p>
+                    <p><strong>Nationality:</strong> {{ personal_data.nationality }}</p>
+                    <p><strong>Date of Birth:</strong> {{ personal_data.date_of_birth }}</p>
+                    <p><strong>Gender:</strong> {{ personal_data.gender }}</p>
+                {% else %}
+                    <p>No personal data available.</p>
+                {% endif %}
+            </div>
+
+            <!-- Professional Experience Section -->
+            <div id="professional_experience" class="section">
+                <h2>Professional Experience</h2>
+                {% if professional_experiences %}
+                    {% for exp in professional_experiences %}
+                        <div>
+                            <h3>{{ exp.title }} at {{ exp.company }}</h3>
+                            <p><strong>Duration:</strong> {{ exp.start_date }} - {% if exp.end_date %}{{ exp.end_date }}{% else %}Present{% endif %}</p>
+                            <p><strong>Employment Type:</strong> {{ exp.employment_type }}</p>
+                            <p><strong>Location:</strong> {{ exp.location }}</p>
+                            <p><strong>Sector:</strong> {{ exp.company_sector }}</p>
+                            <p>{{ exp.description }}</p>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <p>No professional experience available.</p>
+                {% endif %}
+            </div>
+
+            <!-- Education Section -->
+            <div id="education" class="section">
+                <h2>Education</h2>
+                {% if education_entries %}
+                    {% for edu in education_entries %}
+                        <div>
+                            <h3>{{ edu.title }} at {{ edu.institution }}</h3>
+                            <p><strong>Duration:</strong> {{ edu.start_date }} - {% if edu.end_date %}{{ edu.end_date }}{% else %}Present{% endif %}</p>
+                            <p>{{ edu.description }}</p>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <p>No education records available.</p>
+                {% endif %}
+            </div>
+
+            <!-- Skills Section -->
+            <div id="skills" class="section">
+                <h2>Skills</h2>
+                {% if skills %}
+                    <ul>
+                        {% for skill in skills %}
+                            <li>
+                                <strong>{{ skill.title }}:</strong> {{ skill.description }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No skills data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to Highlight Active Navigation Item -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav a[href^="#"]');
+
+            function removeActive() {
+                navLinks.forEach(link => link.classList.remove('active'));
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        removeActive();
+                        const id = entry.target.getAttribute('id');
+                        document.querySelector('.nav a[href="#' + id + '"]').classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

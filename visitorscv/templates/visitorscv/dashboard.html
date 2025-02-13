@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 20px; }
+      .card { border: 1px solid #ccc; padding: 20px; margin: 10px; display: inline-block; width: 200px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div>
+        <div class="card">
+            <h2>{{ total_login_attempts }}</h2>
+            <p>Total Login Attempts</p>
+        </div>
+        <div class="card">
+            <h2>{{ total_successful_logins }}</h2>
+            <p>Successful Logins</p>
+        </div>
+        <div class="card">
+            <h2>{{ total_failed_logins }}</h2>
+            <p>Failed Logins</p>
+        </div>
+        <div class="card">
+            <h2>{{ total_resume_views }}</h2>
+            <p>Total Resume Views</p>
+        </div>
+        <div class="card">
+            <h2>{{ todays_resume_views }}</h2>
+            <p>Today's Resume Views</p>
+        </div>
+    </div>
+    <h2>Resume Components</h2>
+    <div>
+        <div class="card">
+            <h2>{{ total_experiences }}</h2>
+            <p>Professional Experiences</p>
+        </div>
+        <div class="card">
+            <h2>{{ total_education }}</h2>
+            <p>Education Entries</p>
+        </div>
+        <div class="card">
+            <h2>{{ total_skills }}</h2>
+            <p>Skills</p>
+        </div>
+    </div>
+    <br>
+    <a href="{% url 'resume' %}">Back to Resume</a>
+</body>
+</html>

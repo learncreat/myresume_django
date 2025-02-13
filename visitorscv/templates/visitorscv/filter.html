@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Professional Experience</title>
+    <style>
+        body {
+            font-family: Consolas, monospace;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #f1f1f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Filter Professional Experience</h1>
+        <form method="get">
+            {{ filter.form.as_p }}
+            <button type="submit">Search</button>
+        </form>
+        <hr>
+        <h2>Results:</h2>
+        <ul>
+            {% for exp in filter.qs %}
+                <li>
+                    <strong>{{ exp.title }} at {{ exp.company }}</strong>
+                    <br>
+                    Duration: {{ exp.start_date }} - {% if exp.end_date %}{{ exp.end_date }}{% else %}Present{% endif %}
+                </li>
+            {% empty %}
+                <li>No results found.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'resume' %}">Back to Resume</a>
+    </div>
+</body>
+</html>
